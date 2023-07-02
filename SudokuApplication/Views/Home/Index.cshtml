@@ -1,0 +1,119 @@
+﻿@model int[][]
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    .cell {
+        width: 50px;
+        height: 50px;
+        border-color: black;
+        display: flex;
+        margin: 0px;
+        padding: 0px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        cursor: pointer;
+        font-size: 23px;
+    }
+
+    .zeroMargin {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .tdRightMargin {
+        margin: 0px;
+        padding: 0px;
+        padding-right: 4px;
+    }
+
+    .tdBottomMargin {
+        margin: 0px;
+        padding: 0px;
+        padding-bottom: 4px;
+    }
+
+    .tdRightBottomMargin {
+        margin: 0px;
+        padding: 0px;
+        padding-bottom: 4px;
+        padding-right: 4px;
+    }
+</style>
+
+
+<div class="text-center">
+    <table class="text-center">
+        <tbody>
+            @for (int i = 0; i < 9; i++)
+            {
+                <tr>
+                    @for (int j = 0; j < 9; j++)
+                    {
+                        if ((((i + 1) % 3) != 0) && (((j + 1) % 3) != 0))
+                        {
+                            <td class="zeroMargin">
+                                @if (Model[i][j] > 0)
+                                {
+                                    <input id="@(i),@(j)" class="cell" type="text" value="@Model[i][j]" disabled />
+                                }
+                                else
+                                {
+                                    <input id="@(i),@(j)" class="cell" type="text" oninput="onTextChanged(this.id,this.value)" />
+                                }
+                            </td>
+                        }
+                        else if (((i + 1) % 3) == 0)
+                        {
+                            <td class="tdBottomMargin">
+                                @if (Model[i][j] > 0)
+                                {
+                                    <input id="@(i),@(j)" class="cell" type="text" value="@Model[i][j]" disabled />
+                                }
+                                else
+                                {
+                                    <input id="@(i),@(j)" class="cell" type="text" oninput="onTextChanged(this.id,this.value)" />
+                                }
+                            </td>
+                        }
+                        else if (((j + 1) % 3) == 0)
+                        {
+                            <td class="tdRightMargin">
+                                @if (Model[i][j] > 0)
+                                {
+                                    <input id="@(i),@(j)" class="cell" type="text" value="@Model[i][j]" disabled />
+                                }
+                                else
+                                {
+                                    <input id="@(i),@(j)" class="cell" type="text" oninput="onTextChanged(this.id,this.value)" />
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="tdRightBottomMargin">
+                                @if (Model[i][j] > 0)
+                                {
+                                    <input id="@(i),@(j)" class="cell" type="text" value="@Model[i][j]" disabled />
+                                }
+                                else
+                                {
+                                    <input id="@(i),@(j)" class="cell" type="text" oninput="onTextChanged(this.id,this.value)" />
+                                }
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="button" style="width:100px" value="Show Solution" onclick="solveSudoku()"/>
+    <input type="button" style="width:100px" value="Reset Board" onclick="resetSucokuBoard()" />
+</div>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    var serializedModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+    initializeModel(serializedModel);
+</script>
