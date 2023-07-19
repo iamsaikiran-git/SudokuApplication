@@ -1,7 +1,9 @@
-﻿@model int[][]
+﻿@model List<int[][]>
 @{
     ViewData["Title"] = "Home Page";
 }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <style>
     .cell {
         width: 50px;
@@ -40,80 +42,113 @@
         padding-bottom: 4px;
         padding-right: 4px;
     }
+
+    .dropdown-content {
+        display: "none";
+    }
+
+    .drop-down-item {
+        position: absolute;
+        visibility: hidden;
+        background-color: antiquewhite;
+    }
+
+    .dropdown-toggle:hover ~ .drop-down-item {
+        visibility: visible
+    }
+
+    .container_column {
+        display: flex;
+    }
 </style>
 
+<div class="container">
+    <div class="row" style="background-color:bisque;">
+        <div style="display:flex; flex-direction:column;align-items:center;justify-content:center;">
+            <select style="margin-top:20px;margin-bottom:20px" onchange="initializeSudokuBoard(this.value)">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <option value="@i">Sudoku @(i + 1)</option>
+                }
+            </select>
+            <div style="display:flex; justify-content:center; align-items:center; flex-direction:column">
+                @*<ul>
+                <li>
+                <a  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Sudoku
+                </a>
 
-<div class="text-center">
-    <table class="text-center">
-        <tbody>
-            @for (int i = 0; i < 9; i++)
-            {
-                <tr>
-                    @for (int j = 0; j < 9; j++)
-                    {
-                        if ((((i + 1) % 3) != 0) && (((j + 1) % 3) != 0))
+                <div class="dropdown-menu show" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item">Item 1</a>
+                <a class="dropdown-item">Item 2</a>
+                <a class="dropdown-item">Item 3</a>
+                </div>
+                </li>
+                </ul>*@
+                <table style="background-color : lightgray">
+                    <tbody>
+                        @for (int i = 0; i < 9; i++)
                         {
-                            <td class="zeroMargin">
-                                @if (Model[i][j] > 0)
+                            <tr>
+                                @for (int j = 0; j < 9; j++)
                                 {
-                                    <input id="@(i),@(j)" class="cell" type="text" value="@Model[i][j]" disabled />
+                                    var className = "";
+                                    if ((((i + 1) % 3) != 0) && (((j + 1) % 3) != 0))
+                                    {
+                                        className = "zeroMargin";
+                                    }
+                                    else if (((i + 1) % 3) == 0)
+                                    {
+                                        className = "tdBottomMargin";
+                                    }
+                                    else if (((j + 1) % 3) == 0)
+                                    {
+                                        className = "tdRightMargin";
+                                    }
+                                    else
+                                    {
+                                        className = "tdRightBottomMargin";
+                                    }
+                                    <td class="@className">
+                                        <input id="@(i),@(j)" class="cell" type="text" />
+                                    </td>
                                 }
-                                else
-                                {
-                                    <input id="@(i),@(j)" class="cell" type="text" oninput="onTextChanged(this.id,this.value)" />
-                                }
-                            </td>
+                            </tr>
                         }
-                        else if (((i + 1) % 3) == 0)
-                        {
-                            <td class="tdBottomMargin">
-                                @if (Model[i][j] > 0)
-                                {
-                                    <input id="@(i),@(j)" class="cell" type="text" value="@Model[i][j]" disabled />
-                                }
-                                else
-                                {
-                                    <input id="@(i),@(j)" class="cell" type="text" oninput="onTextChanged(this.id,this.value)" />
-                                }
-                            </td>
-                        }
-                        else if (((j + 1) % 3) == 0)
-                        {
-                            <td class="tdRightMargin">
-                                @if (Model[i][j] > 0)
-                                {
-                                    <input id="@(i),@(j)" class="cell" type="text" value="@Model[i][j]" disabled />
-                                }
-                                else
-                                {
-                                    <input id="@(i),@(j)" class="cell" type="text" oninput="onTextChanged(this.id,this.value)" />
-                                }
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="tdRightBottomMargin">
-                                @if (Model[i][j] > 0)
-                                {
-                                    <input id="@(i),@(j)" class="cell" type="text" value="@Model[i][j]" disabled />
-                                }
-                                else
-                                {
-                                    <input id="@(i),@(j)" class="cell" type="text" oninput="onTextChanged(this.id,this.value)" />
-                                }
-                            </td>
-                        }
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-    <input type="button" style="width:100px" value="Show Solution" onclick="solveSudoku()"/>
-    <input type="button" style="width:100px" value="Reset Board" onclick="resetSucokuBoard()" />
+                    </tbody>
+                </table>
+            </div>
+            <div style="justify-content:center;align-items:center;margin-top:20px;margin-bottom:20px; gap:20px">
+                <input type="button" style="width:150px;padding-right:10px" value="Show Solution" onclick="solveSudoku()" />
+                <input type="button" style="width:150px;padding-right:10px" value="Reset Board" onclick="resetSudokuBoard()" />
+            </div>
+        </div>
+    </div>
 </div>
-
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script>
     var serializedModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
     initializeModel(serializedModel);
 </script>
+
+@*<div class="dropdown">
+            <button onclick="toggleDropdown()">Dropdown</button>
+            <div class="dropdown-content" id="myDropdown">
+            <a id="1" href="#" onclick="performAction(this.id)">Item 1</a>
+            <a id="2" href="#" onclick="performAction(this.id)">Item 2</a>
+            <a id="3" href="#" onclick="performAction(this.id)">Item 3</a>
+            </div>
+            </div>*@
+
+@*<ul style="list-style-type : none">
+            <li class="nav-item dropdown">
+            <a class=" nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            SelectSudoku
+            </a>
+            <div class="dropdown-menu show" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" onclick="performAction('1')">Item 1</a>
+            <a class="dropdown-item" onclick="performAction('2')">Item 2</a>
+            <a class="dropdown-item" onclick="performAction('3')">Item 3</a>
+            </div>
+            </li>
+            </ul>*@
