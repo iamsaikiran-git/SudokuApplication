@@ -76,8 +76,7 @@ function onTextChanged(id, value) {
             alert("Congratulations You've solved this sudoku puzzle \n check out other puzzles!!!");
         }
     }
-    else {
-        //IsValidSudokuPlaceMent(row, column, currentSudokuBoard[row][column], "black")
+    else {        
         document.getElementById(id).style.borderColor = "black"
         checkCellsAfterRemoving(row, column, currentSudokuBoard[row][column])
         if (currentSudokuBoard[row][column] > 0 && currentSudokuBoard[row][column] < 10) {
