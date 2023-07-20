@@ -8,6 +8,15 @@ let currentSudokuBoard;
 let initialBoard;
 let givenSudokus;
 let vacantCellsCount = 0;
+let difficultyLevel = 0
+
+// Updates the difficulty level
+function onDifficultyChange(difficultyIndex) {
+    difficultyLevel = difficultyIndex
+    initializeSudokuBoard(0)
+    let selectionTag = document.getElementById("sudokuSelection")
+    selectionTag.selectedIndex = 0;
+}
 
 //Initializes the sudoku application data
 function initializeModel(data) {
@@ -23,6 +32,7 @@ function resetSudokuBoard() {
 
 // Initializes the Sudoku Board
 function initializeSudokuBoard(selectedBoardIndex) {
+    selectedBoardIndex = ((difficultyLevel * 3) + Number(selectedBoardIndex))
     vacantCellsCount = 0
     let tempSelectedSudoku = givenSudokus[selectedBoardIndex]
     currentSudokuBoard = copyArray(tempSelectedSudoku)
@@ -67,8 +77,9 @@ function onTextChanged(id, value) {
         }
     }
     else {
-        IsValidSudokuPlaceMent(row, column, currentSudokuBoard[row][column], "black")
+        //IsValidSudokuPlaceMent(row, column, currentSudokuBoard[row][column], "black")
         document.getElementById(id).style.borderColor = "black"
+        checkCellsAfterRemoving(row, column, currentSudokuBoard[row][column])
         if (currentSudokuBoard[row][column] > 0 && currentSudokuBoard[row][column] < 10) {
             vacantCellsCount += 1
         }
@@ -108,6 +119,56 @@ function IsValidSudokuPlaceMent(row, column, newchar, colorToUpdate) {
         }
     }
     return result;
+}
+
+// Updates the cells based on the 
+function checkCellsAfterRemoving(row, column, currentValue) {
+    let currentRowCount = 0;
+    let currentColumnCount = 0;
+    let currentMiniMatrixCount = 0;
+    for (let i = 0; i < 9; i++) {
+        if (i != column && currentSudokuBoard[row][i] == currentValue)
+            currentRowCount++
+        if (i != row && currentSudokuBoard[i][column] == currentValue)
+            currentColumnCount++
+        let r1 = (3 * (Math.floor(row / 3))) + (Math.floor(i / 3))
+        let c1 = (3 * (Math.floor(column / 3))) + (i % 3)
+        let boxindex = currentSudokuBoard[r1][c1]
+        if (r1 != row && c1 != column && boxindex == currentValue)
+            currentMiniMatrixCount++
+    }
+    let updatedColor = "black"   
+    if (currentRowCount > 1) {
+        updatedColor = "red"
+    }
+    for (let i = 0; i < 9; i++) {
+        if (i != column && currentSudokuBoard[row][i] == currentValue) {
+            document.getElementById(row + "," + i).style.borderColor = updatedColor
+        }
+    }
+    updatedColor = "black"
+
+    if (currentColumnCount > 1) {
+        updatedColor = "red"
+    }
+    for (let i = 0; i < 9; i++) {
+        if (i != row && currentSudokuBoard[i][column] == currentValue) {
+            document.getElementById(i + "," + column).style.borderColor = updatedColor
+        }
+    }
+    updatedColor = "black"
+
+    if (currentMiniMatrixCount > 1) {
+        updatedColor = "red"
+    }
+    for (let i = 0; i < 9; i++) {
+        let r1 = (3 * (Math.floor(row / 3))) + (Math.floor(i / 3))
+        let c1 = (3 * (Math.floor(column / 3))) + (i % 3)
+
+        if (r1 != row && c1 != column && currentSudokuBoard[r1][c1] == currentValue) {
+            document.getElementById(r1 + "," + c1).style.borderColor = updatedColor
+        }
+    }
 }
 
 //Invokes the solve sudoku action

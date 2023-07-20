@@ -66,7 +66,7 @@ namespace SudokuApplication.Controllers
                 new int [] {0,0,0,4,0,7,0,5,0 }
             };
 
-            int[][] boards5 = new int[][]
+            int[][] board5 = new int[][]
             {
                 new int [] {0,5,0,4,9,0,6,0,7 },
                 new int [] {1,0,0,0,2,6,0,9,0 },
@@ -79,7 +79,7 @@ namespace SudokuApplication.Controllers
                 new int [] {0,6,0,0,0,0,7,1,0 }
             };
 
-            int[][] boards6 = new int[][]
+            int[][] board6 = new int[][]
             {
                 new int [] {0,1,0,0,0,0,0,4,3 },
                 new int [] {0,0,0,8,0,1,0,0,7 },
@@ -91,15 +91,45 @@ namespace SudokuApplication.Controllers
                 new int [] {9,0,0,0,0,0,2,6,0 },
                 new int [] {0,4,7,2,0,0,0,0,0 }
             };
+            int[][] board7 = new int[][]
+            {
+                new int [] {1,0,9,6,8,0,0,5,0 },
+                new int [] {0,0,0,2,0,0,0,0,7 },
+                new int [] {0,6,0,0,0,0,0,0,0 },
+                new int [] {0,0,4,0,0,0,0,0,0 },
+                new int [] {3,0,8,0,1,0,0,9,0 },
+                new int [] {0,0,0,0,0,9,5,0,0 },
+                new int [] {0,5,0,0,6,0,0,0,0 },
+                new int [] {0,4,0,0,0,0,0,3,0 },
+                new int [] {6,0,3,8,0,0,2,0,0 }
+            };
 
-            List<int[][]> boards = new List<int[][]>();
-            boards.Add(board);
-            boards.Add(board2);
-            boards.Add(board3);
-            boards.Add(board4);
-            boards.Add(boards5);
-            boards.Add(boards6);
-            return View(boards);
+            int[][] board8 = new int[][]
+            {
+                new int [] { 0,7,0,0,0,0,0,0,9},
+                new int [] { 0,0,2,0,0,4,0,0,0},
+                new int [] { 8,0,0,0,2,0,1,0,5},
+                new int [] { 6,0,0,0,0,0,0,4,0},
+                new int [] { 0,0,0,0,1,0,0,9,0},
+                new int [] { 0,5,0,0,0,3,6,0,1},
+                new int [] { 5,0,0,0,4,0,8,0,2},
+                new int [] { 0,0,0,0,0,0,0,6,0},
+                new int [] { 0,3,0,7,0,0,0,0,0},
+            };
+            int[][] board9 = new int[][]
+            {
+                new int [] { 0,3,0,0,1,0,0,0,0},
+                new int [] { 0,0,7,5,0,3,4,0,0},
+                new int [] { 0,6,0,0,0,0,0,8,0},
+                new int [] { 0,0,3,7,0,9,5,0,0},
+                new int [] { 0,0,0,2,0,0,0,0,0},
+                new int [] { 5,0,0,0,0,0,0,0,4},
+                new int [] { 0,0,0,0,2,0,9,0,0},
+                new int [] { 0,0,1,0,4,0,0,0,0},
+                new int [] { 0,7,0,9,0,1,0,0,6}
+            };
+            
+            return View(new List<int[][]>(){ board,board2,board3,board4,board5,board6,board7,board8,board9 });
         }
         public IActionResult Index1()
         {

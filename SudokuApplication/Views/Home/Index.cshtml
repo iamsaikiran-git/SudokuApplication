@@ -65,26 +65,20 @@
 <div class="container">
     <div class="row" style="background-color:bisque;">
         <div style="display:flex; flex-direction:column;align-items:center;justify-content:center;">
-            <select style="margin-top:20px;margin-bottom:20px" onchange="initializeSudokuBoard(this.value)">
-                @for (int i = 0; i < Model.Count; i++)
-                {
-                    <option value="@i">Sudoku @(i + 1)</option>
-                }
-            </select>
+            <div>
+                <select style="margin-top:20px;margin-bottom:20px" onchange="onDifficultyChange(this.value)">
+                    <option value=0>Easy</option>
+                    <option value=1>Medium</option>
+                    <option value=2>Hard</option>
+                </select>
+                <select id="sudokuSelection" style="margin-top:20px;margin-bottom:20px" onchange="initializeSudokuBoard(this.value)">
+                    @for (int i = 0; i < 3; i++)
+                    {
+                        <option value="@i">Sudoku @(i + 1)</option>
+                    }
+                </select>
+            </div>
             <div style="display:flex; justify-content:center; align-items:center; flex-direction:column">
-                @*<ul>
-                <li>
-                <a  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Select Sudoku
-                </a>
-
-                <div class="dropdown-menu show" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item">Item 1</a>
-                <a class="dropdown-item">Item 2</a>
-                <a class="dropdown-item">Item 3</a>
-                </div>
-                </li>
-                </ul>*@
                 <table style="background-color : lightgray">
                     <tbody>
                         @for (int i = 0; i < 9; i++)
@@ -130,25 +124,3 @@
     var serializedModel = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
     initializeModel(serializedModel);
 </script>
-
-@*<div class="dropdown">
-            <button onclick="toggleDropdown()">Dropdown</button>
-            <div class="dropdown-content" id="myDropdown">
-            <a id="1" href="#" onclick="performAction(this.id)">Item 1</a>
-            <a id="2" href="#" onclick="performAction(this.id)">Item 2</a>
-            <a id="3" href="#" onclick="performAction(this.id)">Item 3</a>
-            </div>
-            </div>*@
-
-@*<ul style="list-style-type : none">
-            <li class="nav-item dropdown">
-            <a class=" nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            SelectSudoku
-            </a>
-            <div class="dropdown-menu show" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" onclick="performAction('1')">Item 1</a>
-            <a class="dropdown-item" onclick="performAction('2')">Item 2</a>
-            <a class="dropdown-item" onclick="performAction('3')">Item 3</a>
-            </div>
-            </li>
-            </ul>*@
