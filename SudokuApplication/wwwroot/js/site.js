@@ -65,6 +65,10 @@ function onTextChanged(id, value) {
     let column = Number(tableCell[1])
     let updatedValue = Number(value)
     if (value != "" && updatedValue >= 1 && updatedValue <= 9) {
+        if (currentSudokuBoard[row][column] > 0)
+        {
+            checkCellsAfterRemoving(row, column, currentSudokuBoard[row][column])
+        }
         if (!IsValidSudokuPlaceMent(row, column, Number(value), "red")) {
             document.getElementById(id).style.borderColor = "red"
         }
